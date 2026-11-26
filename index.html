@@ -140,6 +140,7 @@ nav a:hover { color: #e4c16b; }
 }
 
 .food-image-wrap {
+  position: relative;
   width: 100%;
   height: 165px;
   margin-bottom: 12px;
@@ -159,6 +160,20 @@ nav a:hover { color: #e4c16b; }
 }
 
 .food-card:hover .food-image { transform: scale(1.04); }
+
+.food-emoji {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: rgba(7, 27, 20, .9);
+  border: 1px solid #e4c16b;
+  border-radius: 50%;
+  font-size: 20px;
+}
 
 .price {
   margin-bottom: 12px;
@@ -482,6 +497,7 @@ const GROUP_CHAT_ID = "-1004414848111";
 const FALLBACK_SOUP = "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80";
 const FALLBACK_MEAT = "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80";
 const FALLBACK_DRINK = "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80";
+const FALLBACK_FLASH = "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=800&q=80";
 const FALLBACK_SNACK = "https://images.unsplash.com/photo-1567892737950-3c1c1513e30c?auto=format&fit=crop&w=800&q=80";
 const FALLBACK_CHEESE = "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80";
 const FALLBACK_PISTACHIO = "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80";
@@ -651,8 +667,8 @@ const foods = [
     name: "Flash",
     price: 13000,
     category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1581006852262-e4307cf6283a?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
+    image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=800&q=80",
+    fallback: FALLBACK_FLASH
   },
   {
     name: "Kola 0.5 L",
@@ -786,6 +802,7 @@ const foods = [
     name: "Qurt",
     price: 1000,
     category: "Chaq-chuqlar",
+    emoji: "⚪",
     image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_SNACK
   },
@@ -793,6 +810,7 @@ const foods = [
     name: "Semechka (100 gr)",
     price: 10000,
     category: "Chaq-chuqlar",
+    emoji: "🌻",
     image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_SNACK
   },
@@ -800,6 +818,7 @@ const foods = [
     name: "Sirniy palochka (10 minglik)",
     price: 10000,
     category: "Chaq-chuqlar",
+    emoji: "🧀",
     image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_CHEESE
   },
@@ -807,6 +826,7 @@ const foods = [
     name: "Sirniy palochka (15 minglik)",
     price: 15000,
     category: "Chaq-chuqlar",
+    emoji: "🧀",
     image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_CHEESE
   },
@@ -814,6 +834,7 @@ const foods = [
     name: "Yeryong'oq",
     price: 10000,
     category: "Chaq-chuqlar",
+    emoji: "🥜",
     image: "https://images.unsplash.com/photo-1567892737950-3c1c1513e30c?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_PEANUT
   },
@@ -821,6 +842,7 @@ const foods = [
     name: "Pista",
     price: 10000,
     category: "Chaq-chuqlar",
+    emoji: "🌰",
     image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80",
     fallback: FALLBACK_PISTACHIO
   }
@@ -885,14 +907,21 @@ function renderMenu() {
       if (food.category !== category) return "";
 
       const safeFallback = food.fallback || FALLBACK_MEAT;
+      const emojiBadge = food.emoji
+        ? '<span class="food-emoji" aria-hidden="true">' + food.emoji + '</span>'
+        : "";
+      const titleText = food.emoji
+        ? food.emoji + " " + food.name
+        : food.name;
 
       return (
         '<div class="food-card">' +
           '<div>' +
             '<div class="food-image-wrap">' +
               '<img class="food-image" src="' + food.image + '" alt="' + food.name + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'' + safeFallback + '\';">' +
+              emojiBadge +
             '</div>' +
-            '<h3>' + food.name + '</h3>' +
+            '<h3>' + titleText + '</h3>' +
           '</div>' +
           '<div>' +
             '<p class="price">' + food.price.toLocaleString("uz-UZ") + ' so\'m</p>' +
