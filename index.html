@@ -57,15 +57,14 @@ nav a {
 nav a:hover { color: #e4c16b; }
 
 .hero {
-  min-height: 380px;
+  min-height: 360px;
   padding: 60px 7%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background:
-    linear-gradient(90deg, rgba(7,27,20,.88), rgba(7,27,20,.42)),
-    url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80")
-    center/cover;
+    radial-gradient(circle at top right, rgba(228, 193, 107, 0.16), transparent 45%),
+    linear-gradient(120deg, #061711 0%, #0e2e21 60%, #153b2b 100%);
   border-bottom: 1px solid #52664f;
 }
 
@@ -113,7 +112,7 @@ nav a:hover { color: #e4c16b; }
 
 .menu {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   gap: 18px;
 }
 
@@ -121,7 +120,7 @@ nav a:hover { color: #e4c16b; }
   background: #102b20;
   border: 1px solid #80672f;
   border-radius: 14px;
-  padding: 18px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -133,46 +132,23 @@ nav a:hover { color: #e4c16b; }
   border-color: #e4c16b;
 }
 
+.food-emoji-box {
+  width: 100%;
+  height: 108px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #163829, #0c2219);
+  border: 1px solid rgba(228, 193, 107, 0.3);
+  font-size: 52px;
+  user-select: none;
+}
+
 .food-card h3 {
   color: #e4c16b;
   margin-bottom: 10px;
   font-size: 17px;
-}
-
-.food-image-wrap {
-  position: relative;
-  width: 100%;
-  height: 165px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #1b3b2d;
-  border: 1px solid rgba(228, 193, 107, 0.25);
-}
-
-.food-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  transition: transform .3s;
-}
-
-.food-card:hover .food-image { transform: scale(1.04); }
-
-.food-emoji {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  background: rgba(7, 27, 20, .9);
-  border: 1px solid #e4c16b;
-  border-radius: 50%;
-  font-size: 20px;
 }
 
 .price {
@@ -387,7 +363,7 @@ footer {
 @media(max-width: 600px) {
   header { flex-direction: column; }
   nav { justify-content: center; }
-  .hero { min-height: 320px; }
+  .hero { min-height: 300px; }
   .section { padding: 38px 5%; }
 }
 </style>
@@ -451,7 +427,7 @@ footer {
   <div class="modal-box">
     <div class="modal-header">
       <h3>Stol yoki Xonani tanlang</h3>
-      <button type="button" class="close-modal-btn" onclick="closePlaceModal()">X</button>
+      <button type="button" class="close-modal-btn" onclick="closePlaceModal()">✕</button>
     </div>
     <p style="font-size: 14px; color: #d9cfa9;">
       Buyurtmani yuborish uchun avval xona yoki stolni tanlang:
@@ -460,7 +436,7 @@ footer {
     <div class="modal-group-title">Xonalar</div>
     <div class="select-grid" id="roomsGrid"></div>
 
-    <div class="modal-group-title">Stollar (1-10)</div>
+    <div class="modal-group-title">Stollar (1–10)</div>
     <div class="select-grid" id="tablesGrid"></div>
   </div>
 </div>
@@ -494,358 +470,67 @@ footer {
 const BOT_TOKEN = "9036320455:AAFA_WHwX9TOnyhLaqb3niQm7o94dtQ5xsQ";
 const GROUP_CHAT_ID = "-1004414848111";
 
-const FALLBACK_SOUP = "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_MEAT = "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_DRINK = "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_FLASH = "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_SNACK = "https://images.unsplash.com/photo-1567892737950-3c1c1513e30c?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_CHEESE = "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_PISTACHIO = "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80";
-const FALLBACK_PEANUT = "https://images.unsplash.com/photo-1567892737950-3c1c1513e30c?auto=format&fit=crop&w=800&q=80";
-
 const ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12];
 const TABLE_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const foods = [
   // Suyuq taomlar
-  {
-    name: "Sho'rva",
-    price: 30000,
-    category: "Suyuq taomlar",
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_SOUP
-  },
-  {
-    name: "Lag'mon",
-    price: 35000,
-    category: "Suyuq taomlar",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/0f/%D0%9F%D0%BE%D1%80%D1%86%D0%B8%D1%8F_%D0%BB%D0%B0%D0%B3%D0%BC%D0%B0%D0%BD%D0%B0.jpg?utm_source=ru.wikipedia.org&utm_campaign=index&utm_content=original",
-    fallback: FALLBACK_SOUP
-  },
-  {
-    name: "Mastava",
-    price: 30000,
-    category: "Suyuq taomlar",
-    image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_SOUP
-  },
-  {
-    name: "Chuchvara",
-    price: 30000,
-    category: "Suyuq taomlar",
-    image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_SOUP
-  },
+  { name: "Sho'rva", price: 30000, category: "Suyuq taomlar", emoji: "🍲" },
+  { name: "Lag'mon", price: 35000, category: "Suyuq taomlar", emoji: "🍜" },
+  { name: "Mastava", price: 30000, category: "Suyuq taomlar", emoji: "🍚" },
+  { name: "Chuchvara", price: 30000, category: "Suyuq taomlar", emoji: "🥣" },
 
   // Asosiy taomlar
-  {
-    name: "Olot somsa",
-    price: 10000,
-    category: "Asosiy taomlar",
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Krilishka fri",
-    price: 40000,
-    category: "Asosiy taomlar",
-    image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Fri",
-    price: 15000,
-    category: "Asosiy taomlar",
-    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Manti (1 dona)",
-    price: 8000,
-    category: "Asosiy taomlar",
-    image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%81%D0%BA%D0%B8%D0%B5_%D0%BC%D0%B0%D0%BD%D1%82%D1%8B.jpg/330px-%D0%9A%D0%B0%D0%B7%D0%B0%D1%85%D1%81%D0%BA%D0%B8%D0%B5_%D0%BC%D0%B0%D0%BD%D1%82%D1%8B.jpg?utm_source=ru.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Tabaka",
-    price: 65000,
-    category: "Asosiy taomlar",
-    image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
+  { name: "Olot somsa", price: 10000, category: "Asosiy taomlar", emoji: "🥟" },
+  { name: "Krilishka fri", price: 40000, category: "Asosiy taomlar", emoji: "🍗" },
+  { name: "Fri", price: 15000, category: "Asosiy taomlar", emoji: "🍟" },
+  { name: "Manti (1 dona)", price: 8000, category: "Asosiy taomlar", emoji: "🥟" },
+  { name: "Tabaka", price: 65000, category: "Asosiy taomlar", emoji: "🍗" },
 
   // Kilogramm bo'yicha
-  {
-    name: "Vaguri (1 kg)",
-    price: 280000,
-    category: "Kilogramm bo'yicha",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Jiz (1 kg)",
-    price: 280000,
-    category: "Kilogramm bo'yicha",
-    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Baliq (1 kg)",
-    price: 90000,
-    category: "Kilogramm bo'yicha",
-    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
+  { name: "Vaguri (1 kg)", price: 280000, category: "Kilogramm bo'yicha", emoji: "🥩" },
+  { name: "Jiz (1 kg)", price: 280000, category: "Kilogramm bo'yicha", emoji: "🍖" },
+  { name: "Baliq (1 kg)", price: 90000, category: "Kilogramm bo'yicha", emoji: "🐟" },
 
   // Shashliklar
-  {
-    name: "Qo'y jaz",
-    price: 32000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Qiymali shashlik (20 minglik)",
-    price: 20000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Qiymali shashlik (15 minglik)",
-    price: 15000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "O'rdak",
-    price: 20000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Tovuq qanot",
-    price: 20000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Dumba",
-    price: 25000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
-  {
-    name: "Mangal tovuq",
-    price: 65000,
-    category: "Shashliklar",
-    image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_MEAT
-  },
+  { name: "Qo'y jaz", price: 32000, category: "Shashliklar", emoji: "🍖" },
+  { name: "Qiymali shashlik (20 minglik)", price: 20000, category: "Shashliklar", emoji: "🍢" },
+  { name: "Qiymali shashlik (15 minglik)", price: 15000, category: "Shashliklar", emoji: "🍢" },
+  { name: "O'rdak", price: 20000, category: "Shashliklar", emoji: "🦆" },
+  { name: "Tovuq qanot", price: 20000, category: "Shashliklar", emoji: "🍗" },
+  { name: "Dumba", price: 25000, category: "Shashliklar", emoji: "🥓" },
+  { name: "Mangal tovuq", price: 65000, category: "Shashliklar", emoji: "🔥" },
 
   // Ichimliklar
-  {
-    name: "Sok",
-    price: 15000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Gorila",
-    price: 13000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Flash",
-    price: 13000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_FLASH
-  },
-  {
-    name: "Kola 0.5 L",
-    price: 8000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Kola 1 L",
-    price: 15000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Kola 1.5 L",
-    price: 18000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Kola 2 L",
-    price: 20000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Butulka ichimlik",
-    price: 5000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Fanta 1 L",
-    price: 15000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Fanta 1.5 L",
-    price: 18000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Fanta 2 L",
-    price: 20000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1624517452488-04869289c4ca?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Sprite 1 L",
-    price: 15000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Sprite 1.5 L",
-    price: 18000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Bez gaz / Gazli suv 1 L",
-    price: 8000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Bez gaz / Gazli suv 1.5 L",
-    price: 10000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Razlivnoy piva (1 bokal)",
-    price: 13000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Qibray piva 1.5 L",
-    price: 20000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Sarbast piva 1.5 L",
-    price: 27000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Baklashka / Butulka 0.5 L",
-    price: 16000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1518176258769-f227c798150e?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Banniy piva 0.5 L",
-    price: 16000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1518176258769-f227c798150e?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
-  {
-    name: "Tuborg piva 0.5 L butulka (banniy)",
-    price: 22000,
-    category: "Ichimliklar",
-    image: "https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_DRINK
-  },
+  { name: "Sok", price: 15000, category: "Ichimliklar", emoji: "🧃" },
+  { name: "Gorila", price: 13000, category: "Ichimliklar", emoji: "⚡" },
+  { name: "Flash", price: 13000, category: "Ichimliklar", emoji: "⚡" },
+  { name: "Kola 0.5 L", price: 8000, category: "Ichimliklar", emoji: "🥤" },
+  { name: "Kola 1 L", price: 15000, category: "Ichimliklar", emoji: "🥤" },
+  { name: "Kola 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🥤" },
+  { name: "Kola 2 L", price: 20000, category: "Ichimliklar", emoji: "🥤" },
+  { name: "Butulka ichimlik", price: 5000, category: "Ichimliklar", emoji: "🍾" },
+  { name: "Fanta 1 L", price: 15000, category: "Ichimliklar", emoji: "🍊" },
+  { name: "Fanta 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🍊" },
+  { name: "Fanta 2 L", price: 20000, category: "Ichimliklar", emoji: "🍊" },
+  { name: "Sprite 1 L", price: 15000, category: "Ichimliklar", emoji: "🍋" },
+  { name: "Sprite 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🍋" },
+  { name: "Bez gaz / Gazli suv 1 L", price: 8000, category: "Ichimliklar", emoji: "💧" },
+  { name: "Bez gaz / Gazli suv 1.5 L", price: 10000, category: "Ichimliklar", emoji: "💧" },
+  { name: "Razlivnoy piva (1 bokal)", price: 13000, category: "Ichimliklar", emoji: "🍺" },
+  { name: "Qibray piva 1.5 L", price: 20000, category: "Ichimliklar", emoji: "🍺" },
+  { name: "Sarbast piva 1.5 L", price: 27000, category: "Ichimliklar", emoji: "🍺" },
+  { name: "Baklashka / Butulka 0.5 L", price: 16000, category: "Ichimliklar", emoji: "🍻" },
+  { name: "Banniy piva 0.5 L", price: 16000, category: "Ichimliklar", emoji: "🍻" },
+  { name: "Tuborg piva 0.5 L butulka (banniy)", price: 22000, category: "Ichimliklar", emoji: "🍺" },
 
   // Chaq-chuqlar
-  {
-    name: "Qurt",
-    price: 1000,
-    category: "Chaq-chuqlar",
-    emoji: "⚪",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_SNACK
-  },
-  {
-    name: "Semechka (100 gr)",
-    price: 10000,
-    category: "Chaq-chuqlar",
-    emoji: "🌻",
-    image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_SNACK
-  },
-  {
-    name: "Sirniy palochka (10 minglik)",
-    price: 10000,
-    category: "Chaq-chuqlar",
-    emoji: "🧀",
-    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_CHEESE
-  },
-  {
-    name: "Sirniy palochka (15 minglik)",
-    price: 15000,
-    category: "Chaq-chuqlar",
-    emoji: "🧀",
-    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_CHEESE
-  },
-  {
-    name: "Yeryong'oq",
-    price: 10000,
-    category: "Chaq-chuqlar",
-    emoji: "🥜",
-    image: "https://images.unsplash.com/photo-1567892737950-3c1c1513e30c?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_PEANUT
-  },
-  {
-    name: "Pista",
-    price: 10000,
-    category: "Chaq-chuqlar",
-    emoji: "🌰",
-    image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?auto=format&fit=crop&w=800&q=80",
-    fallback: FALLBACK_PISTACHIO
-  }
+  { name: "Qurt", price: 1000, category: "Chaq-chuqlar", emoji: "⚪" },
+  { name: "Semechka (100 gr)", price: 10000, category: "Chaq-chuqlar", emoji: "🌻" },
+  { name: "Sirniy palochka (10 minglik)", price: 10000, category: "Chaq-chuqlar", emoji: "🧀" },
+  { name: "Sirniy palochka (15 minglik)", price: 15000, category: "Chaq-chuqlar", emoji: "🧀" },
+  { name: "Yeryong'oq", price: 10000, category: "Chaq-chuqlar", emoji: "🥜" },
+  { name: "Pista", price: 10000, category: "Chaq-chuqlar", emoji: "🌰" }
 ];
 
 let cart = [];
@@ -856,7 +541,7 @@ const params = new URLSearchParams(window.location.search);
 const requestedTable = Number(params.get("stol"));
 
 if (Number.isInteger(requestedTable) && TABLE_NUMBERS.includes(requestedTable)) {
-  selectedPlace = "Stol " + requestedTable;
+  selectedPlace = "Stol № " + requestedTable;
 }
 
 function updatePlaceLabel() {
@@ -869,11 +554,11 @@ function renderPlaceOptions() {
   const tablesGrid = document.getElementById("tablesGrid");
 
   roomsGrid.innerHTML = ROOM_NUMBERS.map(room =>
-    '<button type="button" class="place-btn" onclick="selectPlace(\'Xona ' + room + '\')">Xona ' + room + '</button>'
+    '<button type="button" class="place-btn" onclick="selectPlace(\'Xona № ' + room + '\')">Xona ' + room + '</button>'
   ).join("");
 
   tablesGrid.innerHTML = TABLE_NUMBERS.map(table =>
-    '<button type="button" class="place-btn" onclick="selectPlace(\'Stol ' + table + '\')">Stol ' + table + '</button>'
+    '<button type="button" class="place-btn" onclick="selectPlace(\'Stol № ' + table + '\')">Stol ' + table + '</button>'
   ).join("");
 }
 
@@ -906,22 +591,11 @@ function renderMenu() {
     const itemsHtml = foods.map((food, index) => {
       if (food.category !== category) return "";
 
-      const safeFallback = food.fallback || FALLBACK_MEAT;
-      const emojiBadge = food.emoji
-        ? '<span class="food-emoji" aria-hidden="true">' + food.emoji + '</span>'
-        : "";
-      const titleText = food.emoji
-        ? food.emoji + " " + food.name
-        : food.name;
-
       return (
         '<div class="food-card">' +
           '<div>' +
-            '<div class="food-image-wrap">' +
-              '<img class="food-image" src="' + food.image + '" alt="' + food.name + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'' + safeFallback + '\';">' +
-              emojiBadge +
-            '</div>' +
-            '<h3>' + titleText + '</h3>' +
+            '<div class="food-emoji-box" aria-hidden="true">' + food.emoji + '</div>' +
+            '<h3>' + food.name + '</h3>' +
           '</div>' +
           '<div>' +
             '<p class="price">' + food.price.toLocaleString("uz-UZ") + ' so\'m</p>' +
@@ -980,7 +654,7 @@ function renderCart() {
           (item.price * item.quantity).toLocaleString("uz-UZ") + ' so\'m' +
         '</div>' +
         '<div class="cart-controls">' +
-          '<button type="button" onclick="changeQuantity(' + index + ', -1)">-</button>' +
+          '<button type="button" onclick="changeQuantity(' + index + ', -1)">−</button>' +
           '<span>' + item.quantity + '</span>' +
           '<button type="button" onclick="changeQuantity(' + index + ', 1)">+</button>' +
           '<button type="button" class="remove" onclick="removeItem(' + index + ')">O\'chirish</button>' +
@@ -1039,17 +713,17 @@ async function sendOrder() {
   const total = subtotal + service;
 
   const message = [
-    "ROXAT CHOYXONA - YANGI BUYURTMA",
+    "🍽 ROXAT CHOYXONA — YANGI BUYURTMA",
     "",
-    "Joylashuv: " + selectedPlace,
+    "🪑 Joylashuv: " + selectedPlace,
     "",
     ...cart.map(item =>
-      "- " + item.name + " x " + item.quantity + " = " + (item.price * item.quantity).toLocaleString("uz-UZ") + " so'm"
+      "▫️ " + item.name + " x " + item.quantity + " = " + (item.price * item.quantity).toLocaleString("uz-UZ") + " so'm"
     ),
     "",
-    "Mahsulotlar: " + subtotal.toLocaleString("uz-UZ") + " so'm",
-    "Xizmat haqi (10%): " + service.toLocaleString("uz-UZ") + " so'm",
-    "JAMI: " + total.toLocaleString("uz-UZ") + " so'm"
+    "📦 Mahsulotlar: " + subtotal.toLocaleString("uz-UZ") + " so'm",
+    "🧾 Xizmat haqi (10%): " + service.toLocaleString("uz-UZ") + " so'm",
+    "💰 JAMI: " + total.toLocaleString("uz-UZ") + " so'm"
   ].join("\n");
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1068,14 +742,14 @@ async function sendOrder() {
 
   try {
     await fetch(apiUrl, { mode: "no-cors" });
-    statusEl.textContent = "Buyurtma Telegram guruhiga yuborildi!";
+    statusEl.textContent = "✅ Buyurtma Telegram guruhiga yuborildi!";
     alert("Buyurtmangiz Telegram guruhiga yuborildi! Rahmat.");
     cart = [];
     renderCart();
   } catch (error) {
     const img = new Image();
     img.src = apiUrl;
-    statusEl.textContent = "Buyurtma yuborildi!";
+    statusEl.textContent = "✅ Buyurtma yuborildi!";
     cart = [];
     renderCart();
   } finally {
