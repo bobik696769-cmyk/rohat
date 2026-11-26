@@ -495,8 +495,9 @@ const GROUP_CHAT_ID = "-1004414848111";
 const ROOM_NUMBERS = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12];
 const TABLE_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-function createDishArtwork(emoji, title, bgStart, bgEnd, accent) {
+function createDishArtwork(emoji, title, subtitle, bgStart, bgEnd, accent) {
   const safeLabel = String(title).replace(/[<>&"]/g, "");
+  const safeSub = String(subtitle).replace(/[<>&"]/g, "");
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">' +
     '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
@@ -504,72 +505,73 @@ function createDishArtwork(emoji, title, bgStart, bgEnd, accent) {
     '<stop offset="100%" stop-color="' + bgEnd + '"/>' +
     '</linearGradient></defs>' +
     '<rect width="400" height="240" fill="url(#g)"/>' +
-    '<circle cx="200" cy="100" r="56" fill="rgba(255,255,255,0.08)" stroke="' + accent + '" stroke-width="2"/>' +
-    '<text x="200" y="118" font-size="56" text-anchor="middle" dominant-baseline="middle">' + emoji + '</text>' +
-    '<rect x="22" y="178" width="356" height="40" rx="10" fill="rgba(7,27,20,0.78)"/>' +
-    '<text x="200" y="203" fill="#f8f1df" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">' + safeLabel + '</text>' +
+    '<circle cx="200" cy="88" r="50" fill="rgba(255,255,255,0.09)" stroke="' + accent + '" stroke-width="2"/>' +
+    '<text x="200" y="103" font-size="50" text-anchor="middle" dominant-baseline="middle">' + emoji + '</text>' +
+    '<rect x="20" y="156" width="360" height="62" rx="12" fill="rgba(7,27,20,0.82)" stroke="rgba(228,193,107,0.35)"/>' +
+    '<text x="200" y="182" fill="#e4c16b" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">' + safeLabel + '</text>' +
+    '<text x="200" y="204" fill="#d9cfa9" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">' + safeSub + '</text>' +
     '</svg>';
   return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
 }
 
 const foods = [
   // Suyuq taomlar
-  { name: "Sho'rva", price: 30000, category: "Suyuq taomlar", emoji: "🍲", theme: ["#24180c", "#5c3312", "#e4c16b"] },
-  { name: "Lag'mon", price: 35000, category: "Suyuq taomlar", emoji: "🍜", theme: ["#2a140d", "#6b2b18", "#f39c12"] },
-  { name: "Mastava", price: 30000, category: "Suyuq taomlar", emoji: "🍚", theme: ["#1b2214", "#465728", "#e4c16b"] },
-  { name: "Chuchvara", price: 30000, category: "Suyuq taomlar", emoji: "🥣", theme: ["#261910", "#633d20", "#e4c16b"] },
+  { name: "Sho'rva", sub: "Issiq milliy sho'rva", price: 30000, category: "Suyuq taomlar", emoji: "🍲", theme: ["#24180c", "#5c3312", "#e4c16b"] },
+  { name: "Lag'mon", sub: "Qo'lbola cho'zma lag'mon", price: 35000, category: "Suyuq taomlar", emoji: "🍜", theme: ["#2a140d", "#6b2b18", "#f39c12"] },
+  { name: "Mastava", sub: "Guruchli mazali mastava", price: 30000, category: "Suyuq taomlar", emoji: "🍚", theme: ["#1b2214", "#465728", "#e4c16b"] },
+  { name: "Chuchvara", sub: "Qaynoq chuchvara", price: 30000, category: "Suyuq taomlar", emoji: "🥣", theme: ["#261910", "#633d20", "#e4c16b"] },
 
   // Asosiy taomlar
-  { name: "Olot somsa", price: 10000, category: "Asosiy taomlar", emoji: "🥟", theme: ["#2e1a0b", "#7a4419", "#f39c12"] },
-  { name: "Krilishka fri", price: 40000, category: "Asosiy taomlar", emoji: "🍗", theme: ["#2b160c", "#733519", "#e4c16b"] },
-  { name: "Fri", price: 15000, category: "Asosiy taomlar", emoji: "🍟", theme: ["#2b2109", "#755914", "#f39c12"] },
-  { name: "Manti (1 dona)", price: 8000, category: "Asosiy taomlar", emoji: "🥟", theme: ["#14261c", "#2b5940", "#e4c16b"] },
-  { name: "Tabaka", price: 65000, category: "Asosiy taomlar", emoji: "🍗", theme: ["#2e130c", "#782b18", "#e4c16b"] },
+  { name: "Olot somsa", sub: "Qarsildoq Olot somsasi", price: 10000, category: "Asosiy taomlar", emoji: "🥟", theme: ["#2e1a0b", "#7a4419", "#f39c12"] },
+  { name: "Krilishka fri", sub: "Qarsildoq qanotchalar", price: 40000, category: "Asosiy taomlar", emoji: "🍗", theme: ["#2b160c", "#733519", "#e4c16b"] },
+  { name: "Fri", sub: "Kartoshka fri", price: 15000, category: "Asosiy taomlar", emoji: "🍟", theme: ["#2b2109", "#755914", "#f39c12"] },
+  { name: "Manti (1 dona)", sub: "Bug'da pishgan manti", price: 8000, category: "Asosiy taomlar", emoji: "🥟", theme: ["#14261c", "#2b5940", "#e4c16b"] },
+  { name: "Tabaka", sub: "Qovurilgan tabaka jo'ja", price: 65000, category: "Asosiy taomlar", emoji: "🍗", theme: ["#2e130c", "#782b18", "#e4c16b"] },
 
   // Kilogramm bo'yicha
-  { name: "Vaguri (1 kg)", price: 280000, category: "Kilogramm bo'yicha", emoji: "🥩", theme: ["#2b1010", "#6e2222", "#e4c16b"] },
-  { name: "Jiz (1 kg)", price: 280000, category: "Kilogramm bo'yicha", emoji: "🍖", theme: ["#29150b", "#6b3417", "#e4c16b"] },
-  { name: "Baliq (1 kg)", price: 90000, category: "Kilogramm bo'yicha", emoji: "🐟", theme: ["#0e2329", "#1d5261", "#e4c16b"] },
+  { name: "Vaguri (1 kg)", sub: "1 kilogramm vaguri", price: 280000, category: "Kilogramm bo'yicha", emoji: "🥩", theme: ["#2b1010", "#6e2222", "#e4c16b"] },
+  { name: "Jiz (1 kg)", sub: "1 kilogramm jiz", price: 280000, category: "Kilogramm bo'yicha", emoji: "🍖", theme: ["#29150b", "#6b3417", "#e4c16b"] },
+  { name: "Baliq (1 kg)", sub: "1 kilogramm baliq", price: 90000, category: "Kilogramm bo'yicha", emoji: "🐟", theme: ["#0e2329", "#1d5261", "#e4c16b"] },
 
   // Shashliklar
-  { name: "Qo'y jaz", price: 32000, category: "Shashliklar", emoji: "🍖", theme: ["#2b120c", "#752b18", "#f39c12"] },
-  { name: "Qiymali shashlik (20 minglik)", price: 20000, category: "Shashliklar", emoji: "🍢", theme: ["#29140c", "#6e3118", "#e4c16b"] },
-  { name: "Qiymali shashlik (15 minglik)", price: 15000, category: "Shashliklar", emoji: "🍢", theme: ["#24140d", "#5c301b", "#e4c16b"] },
-  { name: "O'rdak", price: 20000, category: "Shashliklar", emoji: "🦆", theme: ["#26180c", "#663f1c", "#e4c16b"] },
-  { name: "Tovuq qanot", price: 20000, category: "Shashliklar", emoji: "🍗", theme: ["#2b160d", "#73371b", "#e4c16b"] },
-  { name: "Dumba", price: 25000, category: "Shashliklar", emoji: "🥓", theme: ["#2b1b0e", "#6e431e", "#e4c16b"] },
-  { name: "Mangal tovuq", price: 65000, category: "Shashliklar", emoji: "🔥", theme: ["#30120a", "#822914", "#f39c12"] },
+  { name: "Qo'y jaz", sub: "Cho'g'da pishgan qo'y jaz", price: 32000, category: "Shashliklar", emoji: "🍖", theme: ["#2b120c", "#752b18", "#f39c12"] },
+  { name: "Qiymali shashlik (20 minglik)", sub: "Maxsus qiymali shashlik", price: 20000, category: "Shashliklar", emoji: "🍢", theme: ["#29140c", "#6e3118", "#e4c16b"] },
+  { name: "Qiymali shashlik (15 minglik)", sub: "Qiymali shashlik", price: 15000, category: "Shashliklar", emoji: "🍢", theme: ["#24140d", "#5c301b", "#e4c16b"] },
+  { name: "O'rdak", sub: "O'rdak shashlik", price: 20000, category: "Shashliklar", emoji: "🦆", theme: ["#26180c", "#663f1c", "#e4c16b"] },
+  { name: "Tovuq qanot", sub: "Tovuq qanot shashlik", price: 20000, category: "Shashliklar", emoji: "🍗", theme: ["#2b160d", "#73371b", "#e4c16b"] },
+  { name: "Dumba", sub: "Dumba shashlik", price: 25000, category: "Shashliklar", emoji: "🥓", theme: ["#2b1b0e", "#6e431e", "#e4c16b"] },
+  { name: "Mangal tovuq", sub: "Mangalda tovuq", price: 65000, category: "Shashliklar", emoji: "🔥", theme: ["#30120a", "#822914", "#f39c12"] },
 
   // Ichimliklar
-  { name: "Sok", price: 15000, category: "Ichimliklar", emoji: "🧃", theme: ["#2b1c09", "#754b14", "#f39c12"] },
-  { name: "Gorila", price: 13000, category: "Ichimliklar", emoji: "⚡", theme: ["#122414", "#27592c", "#2ecc71"] },
-  { name: "Flash", price: 13000, category: "Ichimliklar", emoji: "⚡", theme: ["#10241c", "#1e5943", "#2ecc71"] },
-  { name: "Kola 0.5 L", price: 8000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
-  { name: "Kola 1 L", price: 15000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
-  { name: "Kola 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
-  { name: "Kola 2 L", price: 20000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
-  { name: "Butulka ichimlik", price: 5000, category: "Ichimliklar", emoji: "🍾", theme: ["#0d2229", "#1c5061", "#e4c16b"] },
-  { name: "Fanta 1 L", price: 15000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
-  { name: "Fanta 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
-  { name: "Fanta 2 L", price: 20000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
-  { name: "Sprite 1 L", price: 15000, category: "Ichimliklar", emoji: "🍋", theme: ["#102617", "#235c35", "#2ecc71"] },
-  { name: "Sprite 1.5 L", price: 18000, category: "Ichimliklar", emoji: "🍋", theme: ["#102617", "#235c35", "#2ecc71"] },
-  { name: "Bez gaz / Gazli suv 1 L", price: 8000, category: "Ichimliklar", emoji: "💧", theme: ["#0b202b", "#174b66", "#5dade2"] },
-  { name: "Bez gaz / Gazli suv 1.5 L", price: 10000, category: "Ichimliklar", emoji: "💧", theme: ["#0b202b", "#174b66", "#5dade2"] },
-  { name: "Razlivnoy piva (1 bokal)", price: 13000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
-  { name: "Qibray piva 1.5 L", price: 20000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
-  { name: "Sarbast piva 1.5 L", price: 27000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
-  { name: "Baklashka / Butulka 0.5 L", price: 16000, category: "Ichimliklar", emoji: "🍻", theme: ["#291c09", "#6e4d14", "#e4c16b"] },
-  { name: "Banniy piva 0.5 L", price: 16000, category: "Ichimliklar", emoji: "🍻", theme: ["#291c09", "#6e4d14", "#e4c16b"] },
-  { name: "Tuborg piva 0.5 L butulka (banniy)", price: 22000, category: "Ichimliklar", emoji: "🍺", theme: ["#112418", "#235436", "#e4c16b"] },
+  { name: "Sok", sub: "Tabiiy sharbat", price: 15000, category: "Ichimliklar", emoji: "🧃", theme: ["#2b1c09", "#754b14", "#f39c12"] },
+  { name: "Gorila", sub: "Energetik ichimlik", price: 13000, category: "Ichimliklar", emoji: "⚡", theme: ["#122414", "#27592c", "#2ecc71"] },
+  { name: "Flash", sub: "Energetik ichimlik", price: 13000, category: "Ichimliklar", emoji: "⚡", theme: ["#10241c", "#1e5943", "#2ecc71"] },
+  { name: "Kola 0.5 L", sub: "0.5 litrli ichimlik", price: 8000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
+  { name: "Kola 1 L", sub: "1 litrli ichimlik", price: 15000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
+  { name: "Kola 1.5 L", sub: "1.5 litrli ichimlik", price: 18000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
+  { name: "Kola 2 L", sub: "2 litrli ichimlik", price: 20000, category: "Ichimliklar", emoji: "🥤", theme: ["#240c0c", "#5e1919", "#e4c16b"] },
+  { name: "Butulka ichimlik", sub: "Shisha / butulka ichimlik", price: 5000, category: "Ichimliklar", emoji: "🍾", theme: ["#0d2229", "#1c5061", "#e4c16b"] },
+  { name: "Fanta 1 L", sub: "1 litrli apelsinli ichimlik", price: 15000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
+  { name: "Fanta 1.5 L", sub: "1.5 litrli apelsinli ichimlik", price: 18000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
+  { name: "Fanta 2 L", sub: "2 litrli apelsinli ichimlik", price: 20000, category: "Ichimliklar", emoji: "🍊", theme: ["#2e1808", "#7a3d12", "#f39c12"] },
+  { name: "Sprite 1 L", sub: "1 litrli limonli ichimlik", price: 15000, category: "Ichimliklar", emoji: "🍋", theme: ["#102617", "#235c35", "#2ecc71"] },
+  { name: "Sprite 1.5 L", sub: "1.5 litrli limonli ichimlik", price: 18000, category: "Ichimliklar", emoji: "🍋", theme: ["#102617", "#235c35", "#2ecc71"] },
+  { name: "Bez gaz / Gazli suv 1 L", sub: "1 litrli ichimlik suvi", price: 8000, category: "Ichimliklar", emoji: "💧", theme: ["#0b202b", "#174b66", "#5dade2"] },
+  { name: "Bez gaz / Gazli suv 1.5 L", sub: "1.5 litrli ichimlik suvi", price: 10000, category: "Ichimliklar", emoji: "💧", theme: ["#0b202b", "#174b66", "#5dade2"] },
+  { name: "Razlivnoy piva (1 bokal)", sub: "1 bokal quyma ichimlik", price: 13000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
+  { name: "Qibray piva 1.5 L", sub: "1.5 litr Qibray", price: 20000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
+  { name: "Sarbast piva 1.5 L", sub: "1.5 litr Sarbast", price: 27000, category: "Ichimliklar", emoji: "🍺", theme: ["#2b1f09", "#755414", "#f39c12"] },
+  { name: "Baklashka / Butulka 0.5 L", sub: "0.5 litr idishda", price: 16000, category: "Ichimliklar", emoji: "🍻", theme: ["#291c09", "#6e4d14", "#e4c16b"] },
+  { name: "Banniy piva 0.5 L", sub: "0.5 litr banniy", price: 16000, category: "Ichimliklar", emoji: "🍻", theme: ["#291c09", "#6e4d14", "#e4c16b"] },
+  { name: "Tuborg piva 0.5 L butulka (banniy)", sub: "0.5 L butulka banniy", price: 22000, category: "Ichimliklar", emoji: "🍺", theme: ["#112418", "#235436", "#e4c16b"] },
 
   // Chaq-chuqlar
-  { name: "Qurt", price: 1000, category: "Chaq-chuqlar", emoji: "⚪", theme: ["#26241e", "#5c5646", "#e4c16b"] },
-  { name: "Semechka (100 gr)", price: 10000, category: "Chaq-chuqlar", emoji: "🌻", theme: ["#29200b", "#6e5518", "#f39c12"] },
-  { name: "Sirniy palochka (10 minglik)", price: 10000, category: "Chaq-chuqlar", emoji: "🧀", theme: ["#2b210b", "#755917", "#f39c12"] },
-  { name: "Sirniy palochka (15 minglik)", price: 15000, category: "Chaq-chuqlar", emoji: "🧀", theme: ["#2b210b", "#755917", "#f39c12"] },
-  { name: "Yeryong'oq", price: 10000, category: "Chaq-chuqlar", emoji: "🥜", theme: ["#29190c", "#6e421d", "#e4c16b"] },
-  { name: "Pista", price: 10000, category: "Chaq-chuqlar", emoji: "🌰", theme: ["#182612", "#395c29", "#2ecc71"] }
+  { name: "Qurt", sub: "Tuzli milliy qurt", price: 1000, category: "Chaq-chuqlar", emoji: "⚪", theme: ["#26241e", "#5c5646", "#e4c16b"] },
+  { name: "Semechka (100 gr)", sub: "100 gramm qovurilgan semechka", price: 10000, category: "Chaq-chuqlar", emoji: "🌻", theme: ["#29200b", "#6e5518", "#f39c12"] },
+  { name: "Sirniy palochka (10 minglik)", sub: "Pishloqli tayoqcha", price: 10000, category: "Chaq-chuqlar", emoji: "🧀", theme: ["#2b210b", "#755917", "#f39c12"] },
+  { name: "Sirniy palochka (15 minglik)", sub: "Katta porsiya pishloqli tayoqcha", price: 15000, category: "Chaq-chuqlar", emoji: "🧀", theme: ["#2b210b", "#755917", "#f39c12"] },
+  { name: "Yeryong'oq", sub: "Qovurilgan yeryong'oq", price: 10000, category: "Chaq-chuqlar", emoji: "🥜", theme: ["#29190c", "#6e421d", "#e4c16b"] },
+  { name: "Pista", sub: "Qovurilgan pista", price: 10000, category: "Chaq-chuqlar", emoji: "🌰", theme: ["#182612", "#395c29", "#2ecc71"] }
 ];
 
 let cart = [];
@@ -631,7 +633,7 @@ function renderMenu() {
       if (food.category !== category) return "";
 
       const [bgStart, bgEnd, accent] = food.theme || ["#102b20", "#1b3b2d", "#e4c16b"];
-      const imgSrc = createDishArtwork(food.emoji, food.name, bgStart, bgEnd, accent);
+      const imgSrc = createDishArtwork(food.emoji, food.name, food.sub || category, bgStart, bgEnd, accent);
 
       return (
         '<div class="food-card">' +
